@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>nightmare kakashkera</title>
+    <script src="/static/index.js"></script>
+    <script>
+
+          function openApplication(evt, application) {
+          // Declare all variables
+          var i, tabcontent, tablinks;
+
+          // Get all elements with class="tabcontent" and hide them
+          tabcontent = document.getElementsByClassName("tabcontent");
+          for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+          }
+
+          // Get all elements with class="tablinks" and remove the class "active"
+          tablinks = document.getElementsByClassName("tablinks");
+          for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+          }
+
+          // Show the current tab, and add an "active" class to the button that opened the tab
+          document.getElementById(application).style.display = "block";
+          evt.currentTarget.className += " active";
+        }
+
+        function confirmUploading(evt, hider) {
+            evt.currentTarget.style.display = "none";
+            document.getElementById(hider).style.display = "block";
+        }
+
+    </script>
+    <link rel="stylesheet" href="/static/index.css">
+
+</head>
+<body>
+<!-- Tab links -->
+<div class="tab">
+    <button class="tablinks" onclick="openApplication(event, 'App1')">Приложение 1</button>
+    <button class="tablinks" onclick="openApplication(event, 'App2')">Приложение 2</button>
+    <button class="tablinks" onclick="openApplication(event, 'App3')">Приложение 3</button>
+    <button class="tablinks" onclick="openApplication(event, 'App4')">Приложение 4</button>
+    <button class="tablinks" onclick="openApplication(event, 'App5')">Приложение 5</button>
+</div>
+
+<!-- Tab content -->
+<div id="App1" class="tabcontent">
+    <h3>Приложение №1</h3>
+    <p>Пожалуйста, загрузите приложение №1</p>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="application1"/>
+        <input type="submit"/>
+    </form>
+</div>
+
+<div id="App2" class="tabcontent">
+    <h3>Приложение №2</h3>
+    <button onclick="confirmUploading(event, 'Hider2')">Данный документ загружен автоматически. Желаете загрузить
+        свой?
+    </button>
+    <div id="Hider2" style="display: none">
+        <p>Пожалуйста, загрузите приложение №2</p>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="application2"/>
+            <input type="submit"/>
+        </form>
+    </div>
+</div>
+
+<div id="App3" class="tabcontent">
+    <h3>Приложение №3</h3>
+    <button onclick="confirmUploading(event, 'Hider3')">Данный документ загружен автоматически. Желаете загрузить
+        свой?
+    </button>
+    <div id="Hider3" style="display: none">
+        <p>Пожалуйста, загрузите приложение №3</p>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="application3"/>
+            <input type="submit"/>
+        </form>
+    </div>
+</div>
+
+<div id="App4" class="tabcontent">
+    <h3>Приложение №4</h3>
+    <button onclick="confirmUploading(event, 'Hider4')">Данный документ загружен автоматически. Желаете загрузить
+        свой?
+    </button>
+    <div id="Hider4" style="display: none">
+        <p>Пожалуйста, загрузите приложение №4</p>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="application4"/>
+            <input type="submit"/>
+        </form>
+    </div>
+</div>
+
+<div id="App5" class="tabcontent">
+    <h3>Приложение №5</h3>
+    <button onclick="confirmUploading(event, 'Hider5')">Данный документ загружен автоматически. Желаете загрузить
+        свой?
+    </button>
+    <div id="Hider5" style="display: none">
+        <p>Пожалуйста, загрузите приложение №5</p>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="application5"/>
+            <input type="submit"/>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
