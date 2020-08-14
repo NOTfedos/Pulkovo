@@ -32,7 +32,7 @@ def index():
 
 
 @app.route('/result')
-def result(res_id):
+def result():
     proc()
     return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename='result.xlsx')
 
