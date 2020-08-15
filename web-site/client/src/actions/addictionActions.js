@@ -28,14 +28,13 @@ export const setLoadedAddiction = (addiction) => {
 export const saveFile = (addictionNum, file) => (dispatch, getState) => {
     const state = getState().addiction;
 
-    console.log(file);
-
     const addiction = state.loadedAddictions.filter(addiction => addiction.num === addictionNum)[0];
 
     const formData = new FormData();
     formData.append(`application${addictionNum}`, file);
     axios.post("http://localhost:1489/api/upload", formData).then(
         res => {
+            if (!res.data) return;
             const add = {num: addictionNum, fileUrl: res.data.fileUrl};
             if (addiction)
                 dispatch(setLoadedAddiction(add));
