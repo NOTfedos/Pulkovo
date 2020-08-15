@@ -32,85 +32,56 @@
             document.getElementById(hider).style.display = "block";
         }
 
+
+
     </script>
     <link rel="stylesheet" href="/static/index.css">
+    <style>
 
+        input[type=button], input[type=submit], input[type=file] {
+          background-color: #4CAF50;
+          border: none;
+          color: white;
+          padding: 16px 32px;
+          text-decoration: none;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+
+        .tab .done {
+          background-color: #cfc;
+        }
+
+    </style>
 </head>
 <body>
-<!-- Tab links -->
+
 <div class="tab">
-    <button class="tablinks" onclick="openApplication(event, 'App1')">Приложение 1</button>
-    <button class="tablinks" onclick="openApplication(event, 'App2')">Приложение 2</button>
-    <button class="tablinks" onclick="openApplication(event, 'App3')">Приложение 3</button>
-    <button class="tablinks" onclick="openApplication(event, 'App4')">Приложение 4</button>
-    <button class="tablinks" onclick="openApplication(event, 'App5')">Приложение 5</button>
-</div>
-
-<!-- Tab content -->
-<div id="App1" class="tabcontent">
-    <h3>Приложение №1</h3>
-    <p>Пожалуйста, загрузите приложение №1</p>
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="application1"/>
-        <input type="submit"/>
-    </form>
-</div>
-
-<div id="App2" class="tabcontent">
-    <h3>Приложение №2</h3>
-    <button onclick="confirmUploading(event, 'Hider2')">Данный документ загружен автоматически. Желаете загрузить
-        свой?
+    {% for i, tab in tabs %}
+    <button class="tablinks{{ ' done' if tab }}" onclick="openApplication(event, 'App{{ i }}')">Приложение {{ i }}
     </button>
-    <div id="Hider2" style="display: none">
-        <p>Пожалуйста, загрузите приложение №2</p>
+    {% endfor %}
+</div>
+
+{% for i, tab in tabs %}
+<div id="App{{ i }}" class="tabcontent">
+    <h3>Приложение №{{ i }}</h3>
+    {% if tab %}
+    <input type="button" onclick="confirmUploading(event, 'Hider{{ i }}')"
+           value="Данный документ уже загружен. Желаете загрузить свой?">
+    <div id="Hider{{ i }}" style="display: none">
+        {% endif %}
+        <p>Пожалуйста, загрузите приложение №{{ i }}</p>
         <form method="post" enctype="multipart/form-data">
-            <input type="file" name="application2"/>
+            <input type="file" name="application{{ i }}"/>
             <input type="submit"/>
         </form>
+        {% if tab %}
     </div>
+    <iframe src="/table/{{ i }}"
+            width="100%" height="600px" scrolling="auto"></iframe>
+    {% endif %}
 </div>
-
-<div id="App3" class="tabcontent">
-    <h3>Приложение №3</h3>
-    <button onclick="confirmUploading(event, 'Hider3')">Данный документ загружен автоматически. Желаете загрузить
-        свой?
-    </button>
-    <div id="Hider3" style="display: none">
-        <p>Пожалуйста, загрузите приложение №3</p>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="application3"/>
-            <input type="submit"/>
-        </form>
-    </div>
-</div>
-
-<div id="App4" class="tabcontent">
-    <h3>Приложение №4</h3>
-    <button onclick="confirmUploading(event, 'Hider4')">Данный документ загружен автоматически. Желаете загрузить
-        свой?
-    </button>
-    <div id="Hider4" style="display: none">
-        <p>Пожалуйста, загрузите приложение №4</p>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="application4"/>
-            <input type="submit"/>
-        </form>
-    </div>
-</div>
-
-<div id="App5" class="tabcontent">
-    <h3>Приложение №5</h3>
-    <button onclick="confirmUploading(event, 'Hider5')">Данный документ загружен автоматически. Желаете загрузить
-        свой?
-    </button>
-    <div id="Hider5" style="display: none">
-        <p>Пожалуйста, загрузите приложение №5</p>
-        <form method="post" enctype="multipart/form-data">
-            <input type="file" name="application5"/>
-            <input type="submit"/>
-        </form>
-    </div>
-</div>
-
+{% endfor %}
 </body>
 </html>
