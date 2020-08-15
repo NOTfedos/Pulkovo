@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const SET_CURRENT_ADDICTION_NUMBER = 'SET_CURRENT_ADDICTION_NUMBER';
 const ADD_LOADED_ADDICTION = 'ADD_LOADED_ADDICTION';
 const SET_LOADED_ADDICTION = 'SET_LOADED_ADDICTION';
@@ -23,14 +25,19 @@ export const setLoadedAddiction = (addiction) => {
     }
 };
 
-export const saveFile = (addictionNum, file) => (dispatch, getState) => {
-    const state = getState().addiction;
+export const saveFile = (addictionNum, file) => dispatch => {
+
+    console.log(file);
 
     const addiction = state.loadedAddictions.filter(addiction => addiction.num === addictionNum)[0];
     if (addiction) {
-        dispatch(setLoadedAddiction({...addiction, file: file}))
+        dispatch(setLoadedAddiction({...addiction, fileUrl: file}))
     } else {
-        dispatch(addLoadedAddiction({num: addictionNum, file: file}))
+        const formData = new FormData();
+        formData.append(`application${addictionNum}`, file);
+        axios.post("http://localhost:1489/api/upload", formData).then(
+            res => dispatch(addLoadedAddiction({num: addictionNum, fileUrl: res.data.fileUrl}))
+    )
     }
 };
 

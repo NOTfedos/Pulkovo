@@ -2,11 +2,17 @@ import string
 from flask import Flask, send_from_directory
 from flask import render_template, request, redirect, url_for
 from flask_cors import CORS
+import flask_cors
 from os import path, listdir
 from werkzeug.utils import secure_filename
 from openpyxl import load_workbook
 from itertools import product
 from json import dumps
+
+from logging import getLogger, DEBUG
+
+logger = getLogger('flask_cors')
+logger.level = DEBUG
 
 # from algo import proc
 import webbrowser
@@ -87,7 +93,7 @@ def upload(**kwargs):
             r = i
             filename = secure_filename(file.filename)
             file.save(path.join(app.config['UPLOAD_FOLDER'], f'application{i}.{filename.rsplit(".", 1)[1]}'))
-    return f'{{"fileUrl": "localhost:1489/table/{i}"}}'
+    return {"fileUrl": f"http://localhost:1489/table/{r}"}
 
 
 @app.route('/api/<method>', methods=['POST', 'GET'])

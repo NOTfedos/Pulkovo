@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
 import { saveFile } from "../../../actions/addictionActions";
 
 import styles from './AddictionBlock.module.css';
+import Upload from '../../../icons/Upload.svg';
 
 const AddictionBlock = () => {
 
@@ -16,18 +17,14 @@ const AddictionBlock = () => {
 
     return (
         <div className={styles.addictionBlock}>
+            <input type="file" name={`application${addictionNum}`} id={addictionNum} onChange={(event) => dispatch(saveFile(addictionNum, event.target.files[0]))} className={styles.fileInput}/>
+            <label htmlFor={addictionNum} className={`${styles.inputLabel}`}><img src={Upload} alt="upload" height="20px"/> Добавить файл</label>
             {
                 addiction
                     ?
-                    <iframe src={addiction.file} width="100%" height="600px" scrolling="auto"/>
+                    <iframe src={addiction.fileUrl} width="100%" height="100%" scrolling="auto"/>
                     :
-                    <form encType="multipart/form-data">
-                        <label className="label">
-                            <span className="title">Добавить файл</span>
-                            <input type="file" name="file" onChange={(event) => dispatch(saveFile(addictionNum, event.target.files[0]))}/>
-                        </label>
-                        <input type="submit"/>
-                    </form>
+                    <React.Fragment/>
             }
 
         </div>
