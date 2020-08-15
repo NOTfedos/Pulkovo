@@ -18,6 +18,7 @@ class Lesson:
 
 
 def proc():
+
     data = json.load(open(path.join("excel", "data.json")))
     current_day = date(2019, 12, 30)
 
@@ -28,20 +29,18 @@ def proc():
     # data["progs"] - массив классов программ (приложение 2)
     # data["teacher"] - массив классов учителей (приложение 2)
 
-    for prog in data["progs"]: # формируем словарь расписаний групп
+    for prog in data["progs"]:  # формируем словарь расписаний групп
         for i in range(int(prog.group)):
             group_sch.update({f"{prog.name}'-'{i+1}": []})
 
-    for teacher in data["teacher"]: # формируем словарь расписаний учителей
+    for teacher in data["teacher"]:  # формируем словарь расписаний учителей
         teacher_sch.update({teacher.name: []})
 
-    while current_day.year < 2021:
+    while current_day.year < 2021:  # проход по каждому дню
         teach_list = []
 
         for teacher in data["teacher"]:
             if teacher.is_free(current_day):
                 teach_list.append(teacher)
-        if current_day.weekday() == 6:
 
         current_day += timedelta(days=1)
-
