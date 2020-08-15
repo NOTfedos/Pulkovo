@@ -50,7 +50,7 @@ def proc():
         for i in range(4):
 
             if i == 0:
-                for group in group_sch.keys(): # добавляем текущий день в расписание группы
+                for group in group_sch.keys():  # добавляем текущий день в расписание группы
                     group_sch[group].update({current_day: []})
 
             for group in group_sch.keys():
@@ -58,7 +58,5 @@ def proc():
                 if prog.index <= len(prog.skelet):  # если группа ещё не прошла программу
                     # ищем преподавателей на эту программу
                     prog.index += 1
-
-
 
         current_day += timedelta(days=1)
