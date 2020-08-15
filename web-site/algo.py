@@ -56,7 +56,7 @@ def proc():
             for group in group_sch.keys():
                 prog = group.prog
                 if prog.index <= len(prog.skelet):  # если группа ещё не прошла программу
-
+                    # ищем преподавателей на эту программу
                     prog.index += 1
 
 
