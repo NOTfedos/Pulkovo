@@ -77,15 +77,22 @@ def table(num):
 
 
 def upload(**kwargs):
-    pass
+    for i in range(1, 6):
+        try:
+            file = request.files[f'application{i}']
+        except KeyError:
+            continue
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(path.join(app.config['UPLOAD_FOLDER'], f'application{i}.{filename.rsplit(".", 1)[1]}'))
 
 
-@app.route('/api', methods=['POST', 'GET'])
-def api():
+@app.route('/api/<method>', methods=['POST', 'GET'])
+def api(method):
     return dumps({
         'test': lambda **kwargs: {'result': 'ok'},
         'upload': upload,
-    }[request.args['action']](**request.args))
+    }[method](**request.args))
 
 
 if __name__ == "__main__":
