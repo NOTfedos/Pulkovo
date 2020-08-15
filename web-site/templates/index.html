@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="/static/index.css">
     <style>
 
-        input[type=button], input[type=submit], input[type=file] {
+        input[type=button], input[type=submit] {
           background-color: #06f;
           border: none;
           color: white;
@@ -48,13 +48,20 @@
           cursor: pointer;
         }
 
+        input[type=file]{
+          opacity: 0;
+        }
+
         .tab .done {
           background-color: #cfc;
         }
 
     </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+
+<h2>Этап 1. Выгрузка документов</h2>
 
 <div class="tab">
     {% for i, tab in tabs %}
@@ -73,7 +80,11 @@
         {% endif %}
         <p>Пожалуйста, загрузите приложение №{{ i }}</p>
         <form method="post" enctype="multipart/form-data">
-            <input type="file" name="application{{ i }}"/>
+            <label class="label">
+                <i class="material-icons">attach_file</i>
+                <span class="title">Добавить файл</span>
+                <input type="file" name="application{{ i }}"/>
+            </label>
             <input type="submit"/>
         </form>
         {% if tab %}
@@ -83,5 +94,10 @@
     {% endif %}
 </div>
 {% endfor %}
+<div>
+    {% if ready %}
+        <p>Все документы загружены <a href="result">посмотреть результаты</a><p>
+    {% endif %}
+</div>
 </body>
 </html>
