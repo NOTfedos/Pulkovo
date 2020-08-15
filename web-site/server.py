@@ -76,7 +76,10 @@ def result():
 def table(num):
     if num == 0:
         return ''
-    filename = [filename for filename in listdir('uploads') if filename.startswith(f'application{num}')][0]
+    try:
+        filename = [filename for filename in listdir('uploads') if filename.startswith(f'application{num}')][0]
+    except IndexError:
+        return ''
     workbook = load_workbook(path.join('uploads', filename))
     sheet = workbook.worksheets[0]
     data = [[cell for cell in row] for row in sheet.rows]
