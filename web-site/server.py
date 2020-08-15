@@ -97,7 +97,7 @@ def upload(**kwargs):
             r = i
             filename = secure_filename(file.filename)
             file.save(path.join(app.config['UPLOAD_FOLDER'], f'application{i}.{filename.rsplit(".", 1)[1]}'))
-    return {"fileUrl": f"http://localhost:1489/table/{r}"}
+    return {"fileUrl": f"http://localhost:1489/table/{r}"} if r != 0 else None
 
 
 @app.route('/api/<method>', methods=['POST', 'GET'])
