@@ -28,6 +28,20 @@ class Program(object):
         self.aud = aud
         self.skelet = skelet
         
+class Teacher(object):   
+    def __init__(self, programs, priority, ):
+        self.num = num
+        self.name = name 
+        self.disp = disp 
+        self.programs = programs
+        self.priority = priority
+        self.blacklist = blacklist
+        self.graph = graph
+        self.smen = smen
+
+        
+
+
 def whitelist_check(s):
     for c,i in enumerate(s):
         if "кроме" in i:
@@ -77,29 +91,64 @@ Programs = []
 last = ''
 
 while (file_programs['A'+str(index)].value != None):
-    if (last != file_programs['B'+str(index)].value) amd (file_programs['B'+str(index)].value != None):
+    if (last != file_programs['B'+str(index)].value) and (file_programs['B'+str(index)].value != None):
         last = file_programs['B'+str(index)].value
-    if str(file_programs['C'+str(index)].value) in os.listdir('/Приложение №3 (2)'):        
-
-        wordDoc = docx.Document("/Приложение №3 (2)/"+str(file_programs['C'+str(index)].value))
-
+    if (str(file_programs['C'+str(index)].value)+'.doc') in os.listdir('Приложение №3 (2)'):        
+        word = win32.Dispatch("Word.Application")
+        word.Visible = 0
+        word.Documents.Open("\\Приложение №3 (2)\\"+str(file_programs['C'+str(index)].value)+'.doc')
+        tabl = word.ActiveDocument.Tables(2)
+        skelet = []
+        for i in range((tabl.Rows.Count-1)//4):
+            skelet.append([table.Cell(Row =i*4+1, Column =3).Range.Text,table.Cell(Row =i*4+2, Column =3).Range.Text,table.Cell(Row =i*4+3, Column =3).Range.Text,table.Cell(Row =i*4+4, Column =3).Range.Text])
 
     else:
         skelet = 0
 
     Programs.append(Program(file_programs['A'+str(index)].value, last, file_programs['C'+str(index)].value, file_programs['D'+str(index)].value.split(', '), file_programs['F'+str(index)].value, file_programs['I'+str(index)].value, file_programs['J'+str(index)].value, file_programs['K'+str(index)].value, file_programs['L'+str(index)].value, file_programs['M'+str(index)].value, file_programs['N'+str(index)].value, skelet))
-    
+    index += 1
+
+del file_programs
+#---------------
+file_4 = openpyxl.load_workbook('Приложение №4.xlsx')['график смен']
+
+index = 4
+smen = [[] for _ in range(4)]
+
+for i in range(12):
+    smen[int(file_4['A'+str(i*7+5)].value[-1])].append(list(map(lambda s: s.value, file_1['B'+str(index):'AF'+str(index)][0][::2])))
+    smen[int(file_4['A'+str(i*7+6)].value[-1])].append(list(map(lambda s: s.value, file_1['B'+str(index):'AF'+str(index)][0][::2])))
+    smen[int(file_4['A'+str(i*7+7)].value[-1])].append(list(map(lambda s: s.value, file_1['B'+str(index):'AF'+str(index)][0][::2])))
+    smen[int(file_4['A'+str(i*7+8)].value[-1])].append(list(map(lambda s: s.value, file_1['B'+str(index):'AF'+str(index)][0][::2])))
+
+del file_4
 
 
+#---------------
+file_5 = openpyxl.load_workbook('Приложение №5.xlsx')['План']
+
+index = 1
+while (file_5['A'+str(index)].value == None):
+    index+=1
+
+otpusk=[]
+
+while (file_5['A'+str(index)].value.isnumeric() == None):
+    otpusk.append([file_5['B'+str(index)].value,list(map(lambda s: s.value, file_1['D'+str(index):'AA'+str(index)][0][::2]))])
+    index+=1
+
+del file_5
 
 
+#---------------
+file_teachers = file_2['параметры преподавателей']
 
-table_size = len(wordDoc.tables[1].rows)
-n_report = wordDoc.tables[0].rows[-1].cells[0].text
-date_report = wordDoc.tables[0].rows[-1].cells[1].text
+index = 2
+Teacher = []
 
-dataframe = []
-for i in range(1,table_size):
-    dataframe.append(wordDoc.tables[1].rows[i].cells[1].text)
-dataframe = pd.DataFrame(dataframe)
-print(dataframe)
+while (file_teachers['A'+str(index)].value != None):
+
+    Programs.append(Program(file_teachers['A'+str(index)].value, last, file_programs['C'+str(index)].value, file_programs['D'+str(index)].value.split(', '), file_programs['F'+str(index)].value, file_programs['I'+str(index)].value, file_programs['J'+str(index)].value, file_programs['K'+str(index)].value, file_programs['L'+str(index)].value, file_programs['M'+str(index)].value, file_programs['N'+str(index)].value, skelet))
+    index += 1
+
+
