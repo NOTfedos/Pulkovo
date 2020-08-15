@@ -22,7 +22,7 @@ const AddictionBlock = () => {
             {
                 addiction
                     ?
-                    <iframe src={addiction.fileUrl} width="100%" height="100%" scrolling="auto"/>
+                    <iframe src={addiction.fileUrl} width="100%" height="100%" scrolling="auto" className={styles.addIframe}/>
                     :
                     <React.Fragment/>
             }
