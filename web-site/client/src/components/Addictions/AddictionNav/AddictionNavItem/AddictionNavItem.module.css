@@ -1,0 +1,32 @@
+.navItem {
+    background: #FBEACE;
+    border-radius: 10px 10px 0 0;
+    border: 1px solid #000000;
+    margin-right: 2px;
+    display: flex;
+    align-items: center;
+    transition: height 0.15s;
+    border-bottom: 0
+}
+
+.navItem:hover {
+    cursor: pointer;
+}
+
+.navItemActive {
+    height: 40px;
+}
+
+.navItemInactive {
+    height: 20px;
+}
+
+.navItemLoaded {
+    background: #AEE239;
+}
+
+.navItemText {
+    font-size: 18px;
+    text-align: center;
+    padding: 0 10px;
+}
