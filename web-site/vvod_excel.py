@@ -1,6 +1,7 @@
 import openpyxl
 import os
 import win32com.client as win32
+import zipfile
 
 
 # ----------------------------------------------------------
@@ -54,8 +55,10 @@ def pars_lessons(ind, file_1):
     return list(map(lambda s: s.value, file_1['I' + str(ind):'DK' + str(ind)][0][::2]))
 
 
+UPLOAD_FOLDER = os.path.join('..', 'web-site', 'uploads')
+
 # ----------------------------------------------------------
-file_1 = openpyxl.load_workbook('Приложение №1.xlsx')['ДПО']
+file_1 = openpyxl.load_workbook(os.path.join(UPLOAD_FOLDER, 'application1.xlsx'))['ДПО']
 
 disp = {}
 
@@ -71,16 +74,16 @@ while file_1['G' + str(index)].value is not None:
 del file_1
 
 # ----------------------------------------------------------
-file_2 = openpyxl.load_workbook('Приложение №2.xlsx')
+file_2 = openpyxl.load_workbook(os.path.join(UPLOAD_FOLDER, 'application2.xlsx'))
 # ---------------
 file_auds = file_2['параметры аудиторий']
 
-Audit = []
+audit = []
 index = 2
 
 while file_auds['A' + str(index)].value is not None:
     if 'теоретические' in file_auds['C' + str(index)].value:
-        Audit.append(Aud(file_auds['A' + str(index)].value, file_auds['B' + str(index)].value,
+        audit.append(Aud(file_auds['A' + str(index)].value, file_auds['B' + str(index)].value,
                          file_auds['D' + str(index)].value.split(', '), file_auds['E' + str(index)].value,
                          whitelist_check(file_auds['F' + str(index)].value.split('; ').copy()),
                          file_auds['C' + str(index)].value))
@@ -91,16 +94,19 @@ del file_auds
 file_programs = file_2['параметры программ']
 
 index = 2
-Programs = []
+progs = []
 last = ''
+
+with zipfile.ZipFile(os.path.join(UPLOAD_FOLDER, 'application3.zip'), 'r') as zip_ref:
+    zip_ref.extractall(os.path.join(UPLOAD_FOLDER, 'application3'))
 
 while file_programs['A' + str(index)].value is not None:
     if (last != file_programs['B' + str(index)].value) and (file_programs['B' + str(index)].value is not None):
         last = file_programs['B' + str(index)].value
-    if (str(file_programs['C' + str(index)].value) + '.doc') in os.listdir('Приложение №3 (2)'):
+    if (str(file_programs['C' + str(index)].value) + '.doc') in os.listdir(os.path.join(UPLOAD_FOLDER, 'application3')):
         word = win32.Dispatch("Word.Application")
         word.Visible = 0
-        word.Documents.Open("\\Приложение №3 (2)\\" + str(file_programs['C' + str(index)].value) + '.doc')
+        word.Documents.Open(os.path.join(UPLOAD_FOLDER, 'application3', f"{file_programs['C' + str(index)].value}.doc"))
         table = word.ActiveDocument.Tables(2)
         skelet = []
         for i in range((table.Rows.Count - 1) // 4):
@@ -111,16 +117,16 @@ while file_programs['A' + str(index)].value is not None:
     else:
         skelet = 0
 
-    Programs.append(Program(file_programs['A' + str(index)].value, last, file_programs['C' + str(index)].value,
-                            file_programs['D' + str(index)].value.split(', '), file_programs['F' + str(index)].value,
-                            file_programs['I' + str(index)].value, file_programs['J' + str(index)].value,
-                            file_programs['K' + str(index)].value, file_programs['L' + str(index)].value,
-                            file_programs['M' + str(index)].value, file_programs['N' + str(index)].value, skelet))
+    progs.append(Program(file_programs['A' + str(index)].value, last, file_programs['C' + str(index)].value,
+                         file_programs['D' + str(index)].value.split(', '), file_programs['F' + str(index)].value,
+                         file_programs['I' + str(index)].value, file_programs['J' + str(index)].value,
+                         file_programs['K' + str(index)].value, file_programs['L' + str(index)].value,
+                         file_programs['M' + str(index)].value, file_programs['N' + str(index)].value, skelet))
     index += 1
 
 del file_programs
 # ---------------
-file_4 = openpyxl.load_workbook('Приложение №4.xlsx')['график смен']
+file_4 = openpyxl.load_workbook(os.path.join(UPLOAD_FOLDER, 'application4.xlsx'))['график смен']
 
 index = 4
 smen = [[] for _ in range(4)]
@@ -138,17 +144,17 @@ for i in range(12):
 del file_4
 
 # ---------------
-file_5 = openpyxl.load_workbook('Приложение №5.xlsx')['План']
+file_5 = openpyxl.load_workbook(os.path.join(UPLOAD_FOLDER, 'application5.xlsx'))['План']
 
 index = 1
-while (file_5['A' + str(index)].value == None):
+while file_5['A' + str(index)].value is None:
     index += 1
 
 otpusk = []
 
-while (file_5['A' + str(index)].value.isnumeric() == None):
+while file_5['A' + str(index)].value.isnumeric() is None:
     otpusk.append([file_5['B' + str(index)].value,
-                   list(map(lambda s: s.value, file_1['D' + str(index):'AA' + str(index)][0][::2]))])
+                   list(map(lambda s: s.value, file_5['D' + str(index):'AA' + str(index)][0][::2]))])
     index += 1
 
 del file_5
@@ -157,12 +163,14 @@ del file_5
 file_teachers = file_2['параметры преподавателей']
 
 index = 2
-Teachers = []
+teachers = []
 
-while (file_teachers['A' + str(index)].value != None):
-    Teachers.append(Teacher(file_teachers['A' + str(index)].value, file_teachers['b' + str(index)].value,
+while file_teachers['A' + str(index)].value is not None:
+    teachers.append(Teacher(file_teachers['A' + str(index)].value, file_teachers['b' + str(index)].value,
                             file_teachers['C' + str(index)].value,
                             str(file_teachers['D' + str(index)].value).split(';'),
                             file_teachers['E' + str(index)].value, file_teachers['F' + str(index)].value,
                             file_teachers['G' + str(index)].value, file_teachers['H' + str(index)].value))
     index += 1
+
+print('LOADING COMPLETED')
