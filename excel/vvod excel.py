@@ -3,12 +3,13 @@ import win32com.client as win32
 
 #----------------------------------------------------------
 class Aud(object):   
-    def __init__(self, num, space, spes, priority, whitelist):
+    def __init__(self, num, space, spes, priority, whitelist, typ):
         self.num = num
         self.space = space 
         self.spes = spes #особенности
         self.priority = priority
         self.whitelist = whitelist
+        self.type = typ
         
  
         
@@ -30,7 +31,7 @@ class Program(object):
         self.index = 1
 
 class Teacher(object):   
-    def __init__(self, programs, priority, ):
+    def __init__(self, num, name, disp, programs, priority, blacklist, graph, smen ):
         self.num = num
         self.name = name 
         self.disp = disp 
@@ -80,7 +81,7 @@ index = 2
 
 while (file_auds['A'+str(index)].value != None):
     if 'теоретические' in file_auds['C'+str(index)].value:
-        Audit.append(Aud(file_auds['A'+str(index)].value, file_auds['B'+str(index)].value, file_auds['D'+str(index)].value.split(', '), file_auds['E'+str(index)].value, whitelist_check(file_auds['F'+str(index)].value.split('; ').copy())))
+        Audit.append(Aud(file_auds['A'+str(index)].value, file_auds['B'+str(index)].value, file_auds['D'+str(index)].value.split(', '), file_auds['E'+str(index)].value, whitelist_check(file_auds['F'+str(index)].value.split('; ').copy()), file_auds['C'+str(index)].value))
     index += 1
 del file_auds
 #---------------
@@ -117,10 +118,10 @@ index = 4
 smen = [[] for _ in range(4)]
 
 for i in range(12):
-    smen[int(file_4['A'+str(i*7+5)].value[-1])].append(list(map(lambda s: s.value, file_1['B'+str(index):'AF'+str(index)][0][::2])))
-    smen[int(file_4['A'+str(i*7+6)].value[-1])].append(list(map(lambda s: s.value, file_1['B'+str(index):'AF'+str(index)][0][::2])))
-    smen[int(file_4['A'+str(i*7+7)].value[-1])].append(list(map(lambda s: s.value, file_1['B'+str(index):'AF'+str(index)][0][::2])))
-    smen[int(file_4['A'+str(i*7+8)].value[-1])].append(list(map(lambda s: s.value, file_1['B'+str(index):'AF'+str(index)][0][::2])))
+    smen[int(file_4['A'+str(i*7+5)].value[-1])-1].append(list(map(lambda s: s.value, file_4['B'+str(index):'AF'+str(index)][0][::2])))
+    smen[int(file_4['A'+str(i*7+6)].value[-1])-1].append(list(map(lambda s: s.value, file_4['B'+str(index):'AF'+str(index)][0][::2])))
+    smen[int(file_4['A'+str(i*7+7)].value[-1])-1].append(list(map(lambda s: s.value, file_4['B'+str(index):'AF'+str(index)][0][::2])))
+    smen[int(file_4['A'+str(i*7+8)].value[-1])-1].append(list(map(lambda s: s.value, file_4['B'+str(index):'AF'+str(index)][0][::2])))
 
 del file_4
 
@@ -145,11 +146,11 @@ del file_5
 file_teachers = file_2['параметры преподавателей']
 
 index = 2
-Teacher = []
+Teachers = []
 
 while (file_teachers['A'+str(index)].value != None):
 
-    Programs.append(Program(file_teachers['A'+str(index)].value, last, file_programs['C'+str(index)].value, file_programs['D'+str(index)].value.split(', '), file_programs['F'+str(index)].value, file_programs['I'+str(index)].value, file_programs['J'+str(index)].value, file_programs['K'+str(index)].value, file_programs['L'+str(index)].value, file_programs['M'+str(index)].value, file_programs['N'+str(index)].value, skelet))
+    Teachers.append(Teacher(file_teachers['A'+str(index)].value, file_teachers['b'+str(index)].value, file_teachers['C'+str(index)].value, str(file_teachers['D'+str(index)].value).split(';'), file_teachers['E'+str(index)].value, file_teachers['F'+str(index)].value, file_teachers['G'+str(index)].value, file_teachers['H'+str(index)].value ))
     index += 1
 
 
