@@ -13,18 +13,22 @@
 
 .inputLabel {
     font-size: 20px;
-    background: #00A8C6;
+    background: transparent; "#00A8C6;"
     padding: 10px;
     border-radius: 5px;
-    color: #ffffff;
-    transition: background-color 0.2s;
+    color: grey;
+    transition: color 0.2s, border-color 0.2s;
     margin: 0;
     text-align: center;
+
+    border:2px dashed #00A8C6;
+    padding: 20px 0;
 }
 
 .inputLabel:hover {
     cursor: pointer;
-    background: #3398c6;
+    border-color: black;
+    color: black;
 }
 
 .addIframe {
