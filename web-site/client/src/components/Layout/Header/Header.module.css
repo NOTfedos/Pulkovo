@@ -1,0 +1,20 @@
+.pulHeader {
+    height: 100px;
+    background: #00A8C6;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+}
+
+.pulIcon {
+    margin: 0 10px;
+}
+
+.pulText {
+    font-size: 48px;
+    line-height: 48px;
+    color: #ffffff;
+    /*text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;*/
+}
+
+.appleIcon {
+    height: 48px;
+}
