@@ -2,5 +2,36 @@
     flex: 1 0 auto;
     background: #DCF4F5;
     border: 1px solid #000000;
-    padding: 40px
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.fileInput {
+    display: none
+}
+
+.inputLabel {
+    font-size: 20px;
+    background: transparent; "#00A8C6;"
+    padding: 10px;
+    border-radius: 5px;
+    color: grey;
+    transition: color 0.2s, border-color 0.2s;
+    margin: 0;
+    text-align: center;
+
+    border:2px dashed #00A8C6;
+    padding: 20px 0;
+}
+
+.inputLabel:hover {
+    cursor: pointer;
+    border-color: black;
+    color: black;
+}
+
+.addIframe {
+    border: 0;
+    padding-top: 20px
 }

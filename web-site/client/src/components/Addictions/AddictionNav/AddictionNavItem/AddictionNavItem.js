@@ -9,7 +9,7 @@ import styles from './AddictionNavItem.module.css';
 const AddictionNavItem = (props) => {
     const addictionState = useSelector(state => state.addiction);
     const active = addictionState.addictionNum === props.addictionNum;
-    const loaded = addictionState.loadedAddictions.filter(addiction => addiction.num === addictionState.addictionNum)[0];
+    const loaded = addictionState.loadedAddictions.filter(addiction => addiction.num === props.addictionNum)[0];
 
     const dispatch = useDispatch();
 
