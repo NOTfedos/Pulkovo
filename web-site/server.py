@@ -73,6 +73,6 @@ def table(num):
 
 if __name__ == "__main__":
     debug = False
-    # if not debug:
-    webbrowser.open('http://localhost:1489')
+    if not debug:
+        webbrowser.open('http://localhost:1489')
     app.run(port=1489, host='127.0.0.1', debug=debug)
