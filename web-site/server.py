@@ -2,7 +2,6 @@ import string
 from flask import Flask, send_from_directory
 from flask import render_template, request, redirect, url_for
 from flask_cors import CORS
-import flask_cors
 from os import path, listdir
 from werkzeug.utils import secure_filename
 from openpyxl import load_workbook
@@ -75,6 +74,8 @@ def result():
 
 @app.route('/table/<num>')
 def table(num):
+    if num == 0:
+        return ''
     filename = [filename for filename in listdir('uploads') if filename.startswith(f'application{num}')][0]
     workbook = load_workbook(path.join('uploads', filename))
     sheet = workbook.worksheets[0]
