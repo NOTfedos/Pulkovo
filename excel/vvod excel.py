@@ -27,7 +27,8 @@ class Program(object):
         self.teach = teach
         self.aud = aud
         self.skelet = skelet
-        
+        self.index = 1
+
 class Teacher(object):   
     def __init__(self, programs, priority, ):
         self.num = num
