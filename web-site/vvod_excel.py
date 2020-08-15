@@ -98,6 +98,7 @@ progs = []
 last = ''
 
 with zipfile.ZipFile(os.path.join(UPLOAD_FOLDER, 'application3.zip'), 'r') as zip_ref:
+    print("Unzipped successfully")
     zip_ref.extractall(os.path.join(UPLOAD_FOLDER, 'application3'))
 
 while file_programs['A' + str(index)].value is not None:
@@ -174,3 +175,7 @@ while file_teachers['A' + str(index)].value is not None:
     index += 1
 
 print('LOADING COMPLETED')
+
+
+if __name__ == '__main__':
+    pass

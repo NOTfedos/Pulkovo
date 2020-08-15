@@ -119,4 +119,4 @@ if __name__ == "__main__":
     debug = True
     if not debug:
         webbrowser.open('http://localhost:3001')
-    app.run(port=1489, host='127.0.0.1', debug=debug)
+    app.run(port=3001, host='127.0.0.1', debug=debug)
