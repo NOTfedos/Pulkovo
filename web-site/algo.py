@@ -59,6 +59,4 @@ def proc():
                     # ищем преподавателей на эту программу
                     prog.index += 1
 
-
-
         current_day += timedelta(days=1)
