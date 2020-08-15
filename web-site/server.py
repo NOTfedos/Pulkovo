@@ -1,6 +1,7 @@
 import string
 from flask import Flask, send_from_directory
 from flask import render_template, request, redirect, url_for
+from flask_cors import CORS
 from os import path, listdir
 from werkzeug.utils import secure_filename
 from openpyxl import load_workbook
@@ -14,6 +15,7 @@ DOWNLOAD_FOLDER = path.join(".", "downloads")
 ALLOWED_EXTENSIONS = {'xlsx'}  # openpyxl поддерживает формат xlsx
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 
@@ -55,7 +57,7 @@ def index():
                 filename = secure_filename(file.filename)
                 file.save(path.join(app.config['UPLOAD_FOLDER'], f'application{i}.{filename.rsplit(".", 1)[1]}'))
     tabs = get_tabs()
-    return render_template('index.html', tabs=tabs, ready=all(map(lambda x: x[1],tabs)))
+    return render_template('index.html', tabs=tabs, ready=all(map(lambda x: x[1], tabs)))
 
 
 @app.route('/result')
