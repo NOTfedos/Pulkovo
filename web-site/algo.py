@@ -8,8 +8,13 @@ import json
 
 
 class Lesson:
-    def __init__(self):
-
+    def __init__(self, number, course, day, audi, teacher, group):
+        self.number = number
+        self.course = course
+        self.day = day
+        self.audi = audi
+        self.teacher = teacher
+        self.group = group
 
 
 def proc():
@@ -23,11 +28,11 @@ def proc():
     # data["progs"] - массив классов программ (приложение 2)
     # data["teacher"] - массив классов учителей (приложение 2)
 
-    for prog in data["progs"]: # формируем список групп
+    for prog in data["progs"]: # формируем словарь расписаний групп
         for i in range(int(prog.group)):
             group_sch.update({f"{prog.name}'-'{i+1}": []})
 
-    for teacher in data["teacher"]:
+    for teacher in data["teacher"]: # формируем словарь расписаний учителей
         teacher_sch.update({teacher.name: []})
 
     while current_day.year < 2021:
