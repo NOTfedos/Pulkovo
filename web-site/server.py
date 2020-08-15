@@ -77,14 +77,17 @@ def table(num):
 
 
 def upload(**kwargs):
+    r = 0
     for i in range(1, 6):
         try:
             file = request.files[f'application{i}']
         except KeyError:
             continue
         if file and allowed_file(file.filename):
+            r = i
             filename = secure_filename(file.filename)
             file.save(path.join(app.config['UPLOAD_FOLDER'], f'application{i}.{filename.rsplit(".", 1)[1]}'))
+    return f'{{"fileUrl": "localhost:1489/table/{i}"}}'
 
 
 @app.route('/api/<method>', methods=['POST', 'GET'])
