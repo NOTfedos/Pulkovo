@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
 import { saveFile } from "../../../actions/addictionActions";
@@ -6,6 +6,8 @@ import { saveFile } from "../../../actions/addictionActions";
 import styles from './AddictionBlock.module.css';
 
 const AddictionBlock = () => {
+
+
     const addictionState = useSelector(state => state.addiction);
     const addictionNum = addictionState.addictionNum;
     const addiction = addictionState.loadedAddictions.filter(addiction => addiction.num === addictionNum)[0];
@@ -22,7 +24,7 @@ const AddictionBlock = () => {
                     <form encType="multipart/form-data">
                         <label className="label">
                             <span className="title">Добавить файл</span>
-                            <input type="file" name="application{{ i }}" onChange={(event) => dispatch(saveFile(addictionNum, event.target.files[0]))}/>
+                            <input type="file" name="file" onChange={(event) => dispatch(saveFile(addictionNum, event.target.files[0]))}/>
                         </label>
                         <input type="submit"/>
                     </form>
