@@ -2,6 +2,7 @@ import openpyxl
 import os
 import win32com.client as win32
 import zipfile
+from catalog import indexer
 
 
 # ----------------------------------------------------------
@@ -55,7 +56,7 @@ def pars_lessons(ind, file_1):
     return list(map(lambda s: s.value, file_1['I' + str(ind):'DK' + str(ind)][0][::2]))
 
 
-UPLOAD_FOLDER = os.path.join('..', 'web-site', 'uploads')
+UPLOAD_FOLDER = os.path.abspath(os.path.join(os.curdir, 'uploads'))
 
 # ----------------------------------------------------------
 file_1 = openpyxl.load_workbook(os.path.join(UPLOAD_FOLDER, 'application1.xlsx'))['ДПО']
@@ -100,21 +101,27 @@ last = ''
 with zipfile.ZipFile(os.path.join(UPLOAD_FOLDER, 'application3.zip'), 'r') as zip_ref:
     print("Unzipped successfully")
     zip_ref.extractall(os.path.join(UPLOAD_FOLDER, 'application3'))
-
+word = win32.Dispatch("Word.Application")
+word.Visible = 0
 while file_programs['A' + str(index)].value is not None:
     if (last != file_programs['B' + str(index)].value) and (file_programs['B' + str(index)].value is not None):
         last = file_programs['B' + str(index)].value
-    if (str(file_programs['C' + str(index)].value) + '.doc') in os.listdir(os.path.join(UPLOAD_FOLDER, 'application3')):
-        word = win32.Dispatch("Word.Application")
-        word.Visible = 0
-        word.Documents.Open(os.path.join(UPLOAD_FOLDER, 'application3', f"{file_programs['C' + str(index)].value}.doc"))
-        table = word.ActiveDocument.Tables(2)
-        skelet = []
-        for i in range((table.Rows.Count - 1) // 4):
-            skelet.append(
-                [table.Cell(Row=i * 4 + 1, Column=3).Range.Text, table.Cell(Row=i * 4 + 2, Column=3).Range.Text,
-                 table.Cell(Row=i * 4 + 3, Column=3).Range.Text, table.Cell(Row=i * 4 + 4, Column=3).Range.Text])
+    if f"{file_programs['A' + str(index)].value}.doc" in os.listdir(os.path.join(UPLOAD_FOLDER, 'application3')):
 
+        path = os.path.join(UPLOAD_FOLDER, 'application3', f"{file_programs['A' + str(index)].value}.doc")
+        try:
+            print(path)
+            word.Documents.Open(path)
+            table = word.ActiveDocument.Tables(2)
+            skelet = []
+            for i in range((table.Rows.Count - 1) // 4):
+                skelet.append(
+                    [table.Cell(Row=i * 4 + 1, Column=3).Range.Text, table.Cell(Row=i * 4 + 2, Column=3).Range.Text,
+                     table.Cell(Row=i * 4 + 3, Column=3).Range.Text, table.Cell(Row=i * 4 + 4, Column=3).Range.Text])
+        except Exception as e:
+            skelet = 0
+        finally:
+            word.ActiveDocument.Close()
     else:
         skelet = 0
 
@@ -124,6 +131,7 @@ while file_programs['A' + str(index)].value is not None:
                          file_programs['K' + str(index)].value, file_programs['L' + str(index)].value,
                          file_programs['M' + str(index)].value, file_programs['N' + str(index)].value, skelet))
     index += 1
+word.Quit()
 
 del file_programs
 # ---------------
