@@ -20,3 +20,8 @@ indexer: Dict[str, int] = {
     'перронный контроль': 35,
     'перронный контроль. специальная профессиональная подготовка': 34,
 }
+
+out_indexer: Dict[int, str] = dict()
+
+for key in indexer.keys():
+    out_indexer.update({indexer[key]: key})
