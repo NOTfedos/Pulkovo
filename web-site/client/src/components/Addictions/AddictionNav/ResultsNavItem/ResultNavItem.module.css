@@ -30,5 +30,6 @@
 .navItemUnavailable {
     pointer-events: none;
     background: #cfcfcf;
+    opacity: 100%;
 }
 

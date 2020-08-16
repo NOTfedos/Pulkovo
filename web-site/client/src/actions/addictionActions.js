@@ -4,11 +4,19 @@ const SET_CURRENT_ADDICTION_NUMBER = 'SET_CURRENT_ADDICTION_NUMBER';
 const ADD_LOADED_ADDICTION = 'ADD_LOADED_ADDICTION';
 const SET_LOADED_ADDICTION = 'SET_LOADED_ADDICTION';
 const SET_RESULTS_AVAILABLE = 'SET_RESULTS_AVAILABLE';
+const SET_RESULTS_LOADING = 'SET_RESULTS_LOADING';
 
 export const setCurrentAddictionNumber = (addiction) => {
     return {
         type: SET_CURRENT_ADDICTION_NUMBER,
         payload: addiction
+    }
+};
+
+export const setResultsLoading = (loading) => {
+    return {
+        type: SET_RESULTS_LOADING,
+        payload: loading
     }
 };
 
@@ -49,18 +57,21 @@ export const saveFile = (addictionNum, file) => (dispatch, getState) => {
             else
                 dispatch(addLoadedAddiction(add));
 
-            if (state.loadedAddictions.length === 4 || state.loadedAddictions.length === 6)
+            if (state.loadedAddictions.length === 4 || state.loadedAddictions.length === 6) {
+                dispatch(setResultsLoading(false));
                 axios.get("http://localhost:3001/api/download").then(
                     res =>
+                        dispatch(setResultsAvailable(true) &&
                         dispatch(addLoadedAddiction({
                             num: "result",
                             fileUrl: res.data.fileUrl
-                        }))
-                ).then(dispatch(setResultsAvailable(true)));
+                        })))
+                ).then(() => dispatch(setResultsLoading(false)))
+            }
         }
     )
 
 
 };
 
-export { SET_CURRENT_ADDICTION_NUMBER, ADD_LOADED_ADDICTION, SET_LOADED_ADDICTION, SET_RESULTS_AVAILABLE };
+export { SET_CURRENT_ADDICTION_NUMBER, ADD_LOADED_ADDICTION, SET_LOADED_ADDICTION, SET_RESULTS_AVAILABLE, SET_RESULTS_LOADING };

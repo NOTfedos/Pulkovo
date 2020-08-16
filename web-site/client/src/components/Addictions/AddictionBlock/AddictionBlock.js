@@ -11,6 +11,7 @@ const AddictionBlock = () => {
 
     const addictionState = useSelector(state => state.addiction);
     const addictionNum = addictionState.addictionNum;
+    const loading = addictionState.resultsLoading;
     const addiction = addictionState.loadedAddictions.filter(addiction => addiction.num === addictionNum)[0];
 
     const dispatch = useDispatch();
@@ -29,11 +30,11 @@ const AddictionBlock = () => {
             }
 
             {
-                addiction
+                addiction && !loading
                     ?
                     <iframe src={addiction.fileUrl} width="100%" height="100%" scrolling="auto" className={styles.addIframe}/>
                     :
-                    <React.Fragment/>
+                    <img src="https://media.tenor.co/videos/2c0704c2acccabedf4d82093214ea315/mp4" alt=""/>
             }
 
         </div>

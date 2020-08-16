@@ -96,8 +96,8 @@ def zip():
 def download(**_):
     try:
         done = proc()
-    except:
-        pass
+    except Exception as e:
+        print(e)
     return {'fileUrl': 'http://localhost:3001/table/result'}
 
 
