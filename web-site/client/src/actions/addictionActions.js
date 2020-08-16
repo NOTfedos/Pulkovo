@@ -66,7 +66,7 @@ export const saveFile = (addictionNum, file) => (dispatch, getState) => {
                             num: "result",
                             fileUrl: res.data.fileUrl
                         })))
-                ).then(() => dispatch(setResultsLoading(false)))
+                )
             }
         }
     )

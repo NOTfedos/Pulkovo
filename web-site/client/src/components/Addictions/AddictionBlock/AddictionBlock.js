@@ -34,7 +34,15 @@ const AddictionBlock = () => {
                     ?
                     <iframe src={addiction.fileUrl} width="100%" height="100%" scrolling="auto" className={styles.addIframe}/>
                     :
-                    <img src="https://media.tenor.co/videos/2c0704c2acccabedf4d82093214ea315/mp4" alt=""/>
+                    <React.Fragment/>
+            }
+
+            {
+                loading && addictionNum === 'result'
+                ?
+                    <img src="https://media.giphy.com/media/tLuotGlVFxYic/giphy.gif" alt="spinning gorilla"/>
+                :
+                    <React.Fragment/>
             }
 
         </div>
