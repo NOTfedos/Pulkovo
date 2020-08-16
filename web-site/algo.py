@@ -56,7 +56,8 @@ def save(done):
                 ws.cell(i * 5 + j + 2, 2, f'{j + 1} пара')
                 for index, group in enumerate(done):
                     lesson = group.sch.get(now)
-                    ws.cell(i * 5 + j + 2, 3 + index * 2, lesson.course[j].replace('', '') if lesson is not None else 'Свободно')
+                    ws.cell(i * 5 + j + 2, 3 + index * 2,
+                            f"{lesson.course[j].replace('', '')}\n{lesson.teacher}\n{lesson.aud}" if lesson is not None else "Свободно")
             now += timedelta(days=1)
     wb.remove(wsx)
     wb.save(path.join('downloads', 'result.xlsx'))
