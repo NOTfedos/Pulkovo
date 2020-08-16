@@ -46,13 +46,19 @@ def choose_auditorium(group, auditoriums):
 
 def save(done):
     wb = Workbook()
-    ws = wb.active
-    now = date(2020, 8, 17)
-    for i in range(7):
-        for j in range(4):
-            ws.cell(i * 5 + j + 2, 1, now.strftime('%A'))
-            ws.cell(i * 5 + j + 2, 2, f'{j + 1} пара')
-        now += timedelta(days=1)
+    wsx = wb.active
+    now = date(2020, 1, 20)
+    for week in range(53):
+        ws = wb.create_sheet(f'Week {week + 1}')
+        for i in range(7):
+            for j in range(4):
+                ws.cell(i * 5 + j + 2, 1, now.strftime('%A'))
+                ws.cell(i * 5 + j + 2, 2, f'{j + 1} пара')
+                for index, group in enumerate(done):
+                    lesson = group.sch.get(now)
+                    ws.cell(i * 5 + j + 2, 3 + index, lesson.course[j].replace('', '') if lesson is not None else 'Свободно')
+            now += timedelta(days=1)
+    wb.remove(wsx)
     wb.save(path.join('downloads', 'result.xlsx'))
 
 
@@ -99,6 +105,7 @@ def process_week(n_week: int, plan: List[Optional[str]], groups: List[Group], te
                 teachers = teachers[:teacher] + teachers[teacher:] + [teachers[teacher]]
             now += timedelta(days=1)
     return True
+
 
 def proc():
     data = scrap()
