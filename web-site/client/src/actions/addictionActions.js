@@ -58,15 +58,16 @@ export const saveFile = (addictionNum, file) => (dispatch, getState) => {
                 dispatch(addLoadedAddiction(add));
 
             if (state.loadedAddictions.length === 4 || state.loadedAddictions.length === 6) {
-                dispatch(setResultsLoading(false));
+                dispatch(setResultsLoading(true));
                 axios.get("http://localhost:3001/api/download").then(
                     res =>
-                        dispatch(setResultsAvailable(true) &&
+
                         dispatch(addLoadedAddiction({
                             num: "result",
                             fileUrl: res.data.fileUrl
-                        })))
-                )
+                        }))) && dispatch(setResultsAvailable(true)
+                );
+                dispatch(setResultsLoading(false));
             }
         }
     )
