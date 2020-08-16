@@ -17,8 +17,17 @@ const AddictionBlock = () => {
 
     return (
         <div className={styles.addictionBlock}>
-            <input type="file" name={`application${addictionNum}`} id={addictionNum} onChange={(event) => dispatch(saveFile(addictionNum, event.target.files[0]))} className={styles.fileInput}/>
-            <label htmlFor={addictionNum} className={`${styles.inputLabel}`}><img src={Upload} alt="upload" height="20px"/> Добавить файл</label>
+            {
+                addictionNum !== "result"
+                    ?
+                    <React.Fragment>
+                        <input type="file" name={`application${addictionNum}`} id={addictionNum} onChange={(event) => dispatch(saveFile(addictionNum, event.target.files[0]))} className={styles.fileInput}/>
+                        <label htmlFor={addictionNum} className={`${styles.inputLabel}`}><img src={Upload} alt="upload" height="20px"/> Добавить файл</label>
+                    </React.Fragment>
+                    :
+                    <React.Fragment/>
+            }
+
             {
                 addiction
                     ?

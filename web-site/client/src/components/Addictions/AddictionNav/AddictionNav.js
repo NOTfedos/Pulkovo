@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './AddictionNav.module.css';
 
 import AddictionNavItem from "./AddictionNavItem/AddictionNavItem";
+import ResultNavItem from "./ResultsNavItem/ResultNavItem";
 
 const AddictionNav = () => {
     return (
@@ -12,6 +13,7 @@ const AddictionNav = () => {
                     <AddictionNavItem addictionNum={num} key={num}/>
                 )
             }
+            <ResultNavItem/>
         </div>
     )
 };

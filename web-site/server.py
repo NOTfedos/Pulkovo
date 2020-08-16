@@ -18,7 +18,7 @@ logger.level = DEBUG
 
 UPLOAD_FOLDER = path.join(".", "uploads")
 DOWNLOAD_FOLDER = path.join(".", "downloads")
-ALLOWED_EXTENSIONS = {'xlsx'}  # openpyxl поддерживает формат xlsx
+ALLOWED_EXTENSIONS = {'xlsx', 'zip'}  # openpyxl поддерживает формат xlsx
 
 app = Flask(__name__)
 CORS(app)
@@ -92,6 +92,15 @@ def table(num):
     data = [[cell for cell in row] for row in sheet.rows]
     return render_template('table.html', data=data, alp=get_alp(len(data[0])))
 
+@app.route('/zip/3')
+def zip():
+    try:
+        filename = [filename for filename in listdir('uploads') if filename.startswith(f'application3')][0]
+    except IndexError:
+        return ''
+
+    return render_template('zip.html', data='zip')
+
 
 def download(**_):
     return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename='result.xlsx')
@@ -107,7 +116,9 @@ def upload(**_):
             r = i
             filename = secure_filename(file.filename)
             file.save(path.join(app.config['UPLOAD_FOLDER'], f'application{i}.{filename.rsplit(".", 1)[1]}'))
-    return {"fileUrl": f"http://localhost:1489/table/{r}"} if r != 0 else None
+            if filename.endswith('.zip'):
+                return {"fileUrl": "http://localhost:3001/zip/3"}
+    return {"fileUrl": f"http://localhost:3001/table/{r}"} if r != 0 else None
 
 
 @app.route('/api/<method>', methods=['POST', 'GET'])

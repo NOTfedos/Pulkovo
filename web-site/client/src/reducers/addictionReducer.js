@@ -1,12 +1,14 @@
 import {
     SET_CURRENT_ADDICTION_NUMBER,
     ADD_LOADED_ADDICTION,
-    SET_LOADED_ADDICTION
+    SET_LOADED_ADDICTION,
+    SET_RESULTS_AVAILABLE
 } from "../actions/addictionActions";
 
 const initialState = {
     addictionNum: 1,
-    loadedAddictions: []
+    loadedAddictions: [],
+    resultsAvailable: false
 };
 
 const addiction = (state=initialState, action) => {
@@ -25,6 +27,11 @@ const addiction = (state=initialState, action) => {
             return {
                 ...state,
                 loadedAddictions: state.loadedAddictions.map(el => el.num === action.payload.num ? action.payload: el)
+            };
+        case SET_RESULTS_AVAILABLE:
+            return {
+                ...state,
+                resultsAvailable: action.payload
             };
         default:
             return state;

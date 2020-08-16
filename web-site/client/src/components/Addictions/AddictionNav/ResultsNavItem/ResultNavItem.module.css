@@ -1,12 +1,12 @@
 .navItem {
-    background: #FBEACE;
+    background: linear-gradient(96.95deg, #D8CFFC 31.76%, rgba(255, 225, 179, 0.58) 83.95%);
     border-radius: 10px 10px 0 0;
     border: 1px solid #000000;
-    margin-right: 2px;
     display: flex;
     align-items: center;
     transition: height 0.15s;
-    border-bottom: 0
+    border-bottom: 0;
+    margin-left: auto;
 }
 
 .navItem:hover {
@@ -21,12 +21,15 @@
     height: 25px;
 }
 
-.navItemLoaded {
-    background: #AEE239;
-}
-
 .navItemText {
     font-size: 18px;
     text-align: center;
     padding: 0 10px;
 }
+
+.navItemUnavailable {
+    pointer-events: none;
+    background: #cfcfcf;
+    opacity: 50%;
+}
+
