@@ -20,7 +20,7 @@ UPLOAD_FOLDER = path.join(".", "uploads")
 DOWNLOAD_FOLDER = path.join(".", "downloads")
 ALLOWED_EXTENSIONS = {'xlsx', 'zip'}  # openpyxl поддерживает формат xlsx
 
-app = Flask(__name__, static_folder='./client/build', static_url_path='/')
+app = Flask(__name__, static_folder='./client/z`build', static_url_path='/')
 CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
