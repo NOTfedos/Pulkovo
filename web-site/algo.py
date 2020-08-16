@@ -52,7 +52,7 @@ def save(done):
         for j in range(4):
             ws.cell(i * 5 + j + 2, 1, now.strftime('%A'))
             ws.cell(i * 5 + j + 2, 2, f'{j + 1} пара')
-        now += 1
+        now += timedelta(days=1)
     wb.save(path.join('downloads', 'result.xlsx'))
 
 

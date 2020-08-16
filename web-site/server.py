@@ -92,6 +92,7 @@ def table(num):
     data = [[cell for cell in row] for row in sheet.rows]
     return render_template('table.html', data=data, alp=get_alp(len(data[0])))
 
+
 @app.route('/zip/3')
 def zip():
     try:
@@ -103,7 +104,9 @@ def zip():
 
 
 def download(**_):
+    done = proc()
     return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename='result.xlsx')
+
 
 def upload(**_):
     r = 0
@@ -126,6 +129,7 @@ def api(method):
     return dumps({
         'test': lambda **kwargs: {'result': 'ok'},
         'upload': upload,
+        'download': download
     }[method](**request.args))
 
 
