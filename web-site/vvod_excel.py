@@ -2,14 +2,14 @@ import openpyxl
 import os
 import win32com.client as win32
 import zipfile
-from catalog import indexer
+import json
 
 
 # ----------------------------------------------------------
 class Data(object):
-    def __init__(self, disp, audits, progs, teachers):
+    def __init__(self, disp, audit, progs, teachers):
         self.disp = disp
-        self.audits = audits
+        self.audit = audit
         self.progs = progs
         self.teachers = teachers
 
@@ -190,7 +190,7 @@ def scrap():
                                 file_teachers['E' + str(index)].value, file_teachers['F' + str(index)].value,
                                 file_teachers['G' + str(index)].value, file_teachers['H' + str(index)].value))
         index += 1
-
+    data = Data(disp, audit, progs, teachers)
     print('LOADING COMPLETED')
     return data
 
