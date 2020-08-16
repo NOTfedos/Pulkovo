@@ -13,14 +13,14 @@ import webbrowser
 logger = getLogger('flask_cors')
 logger.level = DEBUG
 
-# from algo import proc
+
 
 
 UPLOAD_FOLDER = path.join(".", "uploads")
 DOWNLOAD_FOLDER = path.join(".", "downloads")
 ALLOWED_EXTENSIONS = {'xlsx', 'zip'}  # openpyxl поддерживает формат xlsx
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./client/build', static_url_path='/')
 CORS(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
@@ -53,41 +53,31 @@ def get_alp(n):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    if request.method == 'POST':
-        for i in chain(range(1, 3), range(4, 6)):
-            try:
-                file = request.files[f'application{i}']
-            except KeyError:
-                continue
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(path.join(app.config['UPLOAD_FOLDER'], f'application{i}.{filename.rsplit(".", 1)[1]}'))
-        try:
-            file = request.files[f'application3']
-        except KeyError:
-            file = None
-        if file and file.filename.endswith('.zip'):
-            filename = secure_filename(file.filename)
-            file.save(path.join(app.config['UPLOAD_FOLDER'], f'application3.{filename.rsplit(".", 1)[1]}'))
-    tabs = get_tabs()
-    return render_template('index.html', tabs=tabs, ready=all(map(lambda x: x[1], tabs)))
+    return app.send_static_file('index.html')
 
 
 @app.route('/result')
 def result():
     done = proc()
+
+
     return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename='result.xlsx')
 
 
 @app.route('/table/<num>')
 def table(num):
+    pth = 'uploads'
     if num == 0:
         return ''
     try:
-        filename = [filename for filename in listdir('uploads') if filename.startswith(f'application{num}')][0]
+        if num != 'result':
+            filename = [filename for filename in listdir('uploads') if filename.startswith(f'application{num}')][0]
     except IndexError:
         return ''
-    workbook = load_workbook(path.join('uploads', filename))
+    if num == 'result':
+        filename = 'result.xlsx'
+        pth = 'downloads'
+    workbook = load_workbook(path.join(pth, filename))
     sheet = workbook.worksheets[0]
     data = [[cell for cell in row] for row in sheet.rows]
     return render_template('table.html', data=data, alp=get_alp(len(data[0])))
@@ -104,8 +94,11 @@ def zip():
 
 
 def download(**_):
-    done = proc()
-    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename='result.xlsx')
+    try:
+        done = proc()
+    except:
+        pass
+    return {'fileUrl': 'http://localhost:3001/table/result'}
 
 
 def upload(**_):

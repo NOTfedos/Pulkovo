@@ -3,6 +3,7 @@ import os
 import win32com.client as win32
 import zipfile
 import json
+import pythoncom
 
 
 # ----------------------------------------------------------
@@ -110,6 +111,9 @@ def scrap():
     with zipfile.ZipFile(os.path.join(UPLOAD_FOLDER, 'application3.zip'), 'r') as zip_ref:
         print("Unzipped successfully")
         zip_ref.extractall(os.path.join(UPLOAD_FOLDER, 'application3'))
+
+       #Сразу перед инициализацией DCOM в run()
+    pythoncom.CoInitializeEx(0)
     word = win32.Dispatch("Word.Application")
     word.Visible = 0
     while file_programs['A' + str(index)].value is not None:

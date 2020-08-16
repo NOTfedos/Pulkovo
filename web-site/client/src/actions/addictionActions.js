@@ -49,17 +49,14 @@ export const saveFile = (addictionNum, file) => (dispatch, getState) => {
             else
                 dispatch(addLoadedAddiction(add));
 
-            /*if (state.loadedAddictions.length === 5)
-                axios.post("http://localhost:3001/api/upload", formData).then(
+            if (state.loadedAddictions.length === 4 || state.loadedAddictions.length === 6)
+                axios.get("http://localhost:3001/api/download").then(
                     res =>
                         dispatch(addLoadedAddiction({
                             num: "result",
-                            fileUrl: 'http://localhost:3001/table/1'
+                            fileUrl: res.data.fileUrl
                         }))
                 ).then(dispatch(setResultsAvailable(true)));
-
-             */
-            console.log(state);
         }
     )
 

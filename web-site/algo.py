@@ -100,7 +100,6 @@ def process_week(n_week: int, plan: List[Optional[str]], groups: List[Group], te
             now += timedelta(days=1)
     return True
 
-
 def proc():
     data = scrap()
     plan = data.disp['Досмотр']
