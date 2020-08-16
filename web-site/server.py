@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 from openpyxl import load_workbook
 from itertools import product, chain
 from json import dumps
-
+from algo import proc
 from logging import getLogger, DEBUG
 import webbrowser
 logger = getLogger('flask_cors')
@@ -75,7 +75,7 @@ def index():
 
 @app.route('/result')
 def result():
-    # proc()
+    done = proc()
     return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename='result.xlsx')
 
 
@@ -92,6 +92,9 @@ def table(num):
     data = [[cell for cell in row] for row in sheet.rows]
     return render_template('table.html', data=data, alp=get_alp(len(data[0])))
 
+
+def download(**_):
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename='result.xlsx')
 
 def upload(**_):
     r = 0
@@ -113,6 +116,7 @@ def api(method):
         'test': lambda **kwargs: {'result': 'ok'},
         'upload': upload,
     }[method](**request.args))
+
 
 
 if __name__ == "__main__":

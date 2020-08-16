@@ -1,11 +1,11 @@
-# import table_parser
-from datetime import date, timedelta
+from datetime import date, timedelta, time
 from os import path
 import json
 from typing import Dict, List, Optional
 from vvod_excel import Aud, Program, Teacher, scrap, Data
 from catalog import discipline, speciality
 from copy import copy
+from openpyxl import Workbook
 
 """      data.json      """
 
@@ -42,6 +42,18 @@ def choose_auditorium(group, auditoriums):
     for i, auditorium in enumerate(auditoriums):
         if speciality(auditorium) == 'Досмотр':
             return i
+
+
+def save(done):
+    wb = Workbook()
+    ws = wb.active
+    now = date(2020, 8, 17)
+    for i in range(7):
+        for j in range(4):
+            ws.cell(i * 5 + j + 2, 1, now.strftime('%A'))
+            ws.cell(i * 5 + j + 2, 2, f'{j + 1} пара')
+        now += 1
+    wb.save(path.join('downloads', 'result.xlsx'))
 
 
 def process_week(n_week: int, plan: List[Optional[str]], groups: List[Group], teachers, auditoriums, done):
@@ -111,6 +123,8 @@ def proc():
     done = list()
     week = process_week(4, plan, groups, teachers, auditoriums, done)
     print('Done')
+    save(done)
+    return done
 
 
 '''
