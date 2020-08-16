@@ -47,7 +47,7 @@ def choose_auditorium(group, auditoriums):
 def save(done):
     wb = Workbook()
     wsx = wb.active
-    now = date(2020, 1, 20)
+    now = date(2019, 12, 30)
     for week in range(53):
         ws = wb.create_sheet(f'Week {week + 1}')
         for i in range(7):
@@ -56,7 +56,7 @@ def save(done):
                 ws.cell(i * 5 + j + 2, 2, f'{j + 1} пара')
                 for index, group in enumerate(done):
                     lesson = group.sch.get(now)
-                    ws.cell(i * 5 + j + 2, 3 + index, lesson.course[j].replace('', '') if lesson is not None else 'Свободно')
+                    ws.cell(i * 5 + j + 2, 3 + index * 2, lesson.course[j].replace('', '') if lesson is not None else 'Свободно')
             now += timedelta(days=1)
     wb.remove(wsx)
     wb.save(path.join('downloads', 'result.xlsx'))
