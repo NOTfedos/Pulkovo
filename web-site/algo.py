@@ -34,14 +34,20 @@ def choose_group(name, groups):
 
 def choose_teacher(group, teachers):
     for i, teacher in enumerate(teachers):
-        if speciality(group.prog) == group or group.prog.days > 0:
+        if speciality(teacher) == 'Досмотр':
             return i
 
 
-def process_week(n_week: int, plan: List[Optional[str]], groups: List[Group], teachers):
+def choose_auditorium(group, auditoriums):
+    for i, auditorium in enumerate(auditoriums):
+        if speciality(auditorium) == 'Досмотр':
+            return i
+
+
+def process_week(n_week: int, plan: List[Optional[str]], groups: List[Group], teachers, auditoriums, done):
     week = plan[n_week]
     if week is None:
-        return [None for _ in range(7)]
+        return False
     splatted_groups = week.split('\n\n')
     for group in splatted_groups:
         left, right = group.split('-')
@@ -55,24 +61,32 @@ def process_week(n_week: int, plan: List[Optional[str]], groups: List[Group], te
         name = ' '.join(left.split('\n')[:-1]).strip()
         now = start_date
         while now <= end_date:
+            mask = 0
             while True:
-                group = choose_group(name, groups)
+                group = choose_group(name, groups[:-mask] if mask > 0 else groups)
                 print(group)
                 if group is None:
                     break
-                teacher = choose_teacher(groups[group], teachers)
-                if group is None:
+                teacher = choose_teacher(groups[group], teachers[:-mask] if mask > 0 else teachers)
+                if teacher is None:
                     break
+                auditorium = choose_auditorium(groups[group], auditoriums[:-mask] if mask > 0 else auditoriums)
+                if auditorium is None:
+                    break
+
                 if len(groups[group].prog.skelet) == 0:
+                    done.append(groups[group])
                     del groups[group]
                 else:
-                    groups[group].sch[now] = groups[group].prog.skelet[0]
+                    mask += 1
+                    groups[group].sch[now] = Lesson(0, groups[group].prog.skelet[0], now, auditoriums[auditorium],
+                                                    teachers[teacher], groups[group])
                     del groups[group].prog.skelet[0]
                     groups = groups[:group] + groups[group:] + [groups[group]]
 
                 teachers = teachers[:teacher] + teachers[teacher:] + [teachers[teacher]]
             now += timedelta(days=1)
-    print()
+    return True
 
 
 def proc():
@@ -94,7 +108,8 @@ def proc():
     for program in programs:
         for i in range(int(program.group)):
             groups.append(Group(program))
-    week = process_week(4, plan, groups, teachers)
+    done = list()
+    week = process_week(4, plan, groups, teachers, auditoriums, done)
     print('Done')
 
 

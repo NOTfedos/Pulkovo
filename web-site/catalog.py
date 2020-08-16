@@ -52,13 +52,17 @@ program_specialise: Dict[str, str] = {
     'Программа специальной профессиональной подготовки  «Предотвращение несанкционированного доступа в контролируемую '
     'зону аэропорта»':
         'Специальная профессиональная подготовка',
-
+    # ...
 }
 
 
 def speciality(element):
     if isinstance(element, Program):
         return program_specialise[element.name]
+    elif isinstance(element, Teacher):
+        return teacher_indexer.get(element.priority, 'Досмотр')
+    elif isinstance(element, Aud):
+        return auditorium_indexer[element.priority]
 
 
 indexer: Dict[str, int] = {
